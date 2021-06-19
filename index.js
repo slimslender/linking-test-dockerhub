@@ -1,1 +1,1 @@
-console.log("{:version 0}");
+console.log("{:version 1}");

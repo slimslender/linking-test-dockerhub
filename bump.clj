@@ -1,6 +1,13 @@
-#!/bin/bash -i
+#!/usr/bin/env bb
 
-atm-bb bump-version $(pwd)/index.js
-git commit -am 'bump'
-git push origin main
+(require '[clojure.string :as s])
 
+(defn bump [& args]
+  (let [filename (or (first args) "Dockerfile")]
+    (spit filename
+          (s/replace
+           (slurp filename)
+           #":version (\d+)"
+           (fn [[_ v]] (format ":version %s" (inc (Integer/parseInt v))))))))
+
+(apply bump *command-line-args*)
